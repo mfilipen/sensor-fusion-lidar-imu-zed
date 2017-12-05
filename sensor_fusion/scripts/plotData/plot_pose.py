@@ -29,6 +29,9 @@ def f_plot(*args, **kwargs):
     ax.grid(True)
     ax.legend()
 
+def printToFile(f,t,data):
+    for i in range(len(data)):
+        f.write("{:.9f} {:.9f}\n".format(t[i],data[i,0]))
 
 # get an instance of RosPack with the default search paths
 rospack = rospkg.RosPack()
@@ -80,6 +83,11 @@ for i in range(len(vx)-1):
     vx_new[i+1] = cos(yaw_pose[i]) * vx[i+1] + sin(yaw_pose[i]) * vy[i+1]
     vy_new[i+1] = sin(yaw_pose[i]) * (-1)* vx[i+1] +  cos(yaw_pose[i])* vy[i+1]
 
+f_vx = open(path+'vx_robot_frame_lidar.txt', 'w')
+f_vy = open(path+'vy_robot_frame_lidar.txt', 'w')
+
+printToFile(f_vx,t_pose,vx_new)
+printToFile(f_vy,t_pose,vy_new)
 
 f_plot(t_pose, vx_new, colors=colors, linewidth=2.)
 f_plot(t_pose, vy_new, colors=colors, linewidth=2.)
