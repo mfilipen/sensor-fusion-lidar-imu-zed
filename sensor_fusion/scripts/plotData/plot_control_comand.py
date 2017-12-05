@@ -16,15 +16,16 @@ def f_plot(*args, **kwargs):
             ylist.append(arg)
 
     colors = kwargs.pop('colors', 'k')
+    list = kwargs.pop('list', 'k')
     linewidth = kwargs.pop('linewidth', 1.)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     i = 0
     for x, y, color in zip(xlist, ylist, colors):
-        i += 1
-        ax.plot(x, y, color=color, linewidth=linewidth, label=str(i))
 
+        ax.plot(x, y, color=color, linewidth=linewidth, label=list[i])
+        i += 1
     ax.grid(True)
     ax.legend()
 
@@ -57,8 +58,10 @@ for i in range(len(iwz)):
     for j in range(i):
         wz_yaw[i]+=iwz[j]
 
+name_vx = ['vx(t)']
+name_wz = ['wz(t)']
 
-f_plot(t_wz, wz , colors=colors, linewidth=2.)
+f_plot(t_wz, wz , colors=colors, list=name_wz, linewidth=2.)
 f_plot(t_wz, wz_yaw , colors=colors, linewidth=2.)
 
 for j in range(5):
@@ -66,9 +69,12 @@ for j in range(5):
         if (wz_yaw[i]>3.14159265):
             wz_yaw[i]-=2*3.14159265
 
-f_plot(t_wz, wz_yaw, colors=colors, linewidth=2.)
 
-f_plot(t_vx, vx, colors=colors, linewidth=2.)
+
+
+f_plot(t_wz, wz_yaw, colors=colors, list=name_wz, linewidth=2.)
+
+f_plot(t_vx, vx, colors=colors, list=name_vx, linewidth=2.)
 
 plt.show()
 

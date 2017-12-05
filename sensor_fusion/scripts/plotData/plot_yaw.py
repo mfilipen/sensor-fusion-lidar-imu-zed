@@ -125,7 +125,7 @@ yaw_pose_orientation = data_lidar_odom[:,1]
 t_ZED_orientation = data_ZED_odom[:,0]
 yaw_ZED_orientation = data_ZED_odom[:,1]
 
-'''
+
 denormalize(yaw_magnetometer)
 denormalize(yaw_pose_orientation)
 denormalize(yaw_ZED_orientation)
@@ -144,7 +144,7 @@ f_plot(t_magnetometer, yaw_magnetometer,
        t_acc, z,
        t_wz, wz_yaw,
        colors=colors, linewidth=2.)
-'''
+
 
 f_plot(t_pose_orientation,yaw_pose_orientation,
        colors=colors, linewidth=2.)

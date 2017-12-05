@@ -38,11 +38,12 @@ def prepareLatice(x, xnew):
     start = 0
     end = 0
     for i in range(len(xnew) - 1):
-        if xnew[i] < x[0]:
+        if xnew[i] <= x[0]:
             start += 1
 
-        if x[len(x)-1] < xnew[i]:
+        if x[len(x)-1] <= xnew[i]:
             end += 1
+    print(end.__str__() + ' ' + start.__str__() +"/n")
 
     return_x= xnew[(start + 1):(len(xnew) - end - 1)]
     return return_x
@@ -78,7 +79,7 @@ x = t_wz
 y = wz
 f = interp1d(x, y)
 
-xnew = prepareLatice(x,t_pose)
+xnew = t_pose
 
 plt.plot(x, y, '-', xnew, f(xnew), 'o')
 plt.legend(['wz(t)', 'wz(t)-linear interpolation'], loc='best')
@@ -91,7 +92,7 @@ x = t_vx
 y = vx
 f = interp1d(x, y)
 
-xnew = prepareLatice(x,t_pose)
+xnew = t_pose
 
 plt.plot(x, y, '-', xnew, f(xnew), 'o')
 plt.legend(['vx(t)', 'vx(t)-linear interpolation'], loc='best')
