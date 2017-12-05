@@ -31,7 +31,7 @@ def f_plot(*args, **kwargs):
 
 def printToFile(f,t,data):
     for i in range(len(data)):
-        f.write("{:.9f} {:.9f}\n".format(t[i],data[i,0]))
+        f.write("{:.9f} {:.9f}\n".format(t[i],data[i]))
 
 # get an instance of RosPack with the default search paths
 rospack = rospkg.RosPack()
@@ -49,6 +49,16 @@ t_pose = data_pose[:, 0]
 x_pose = data_pose[:, 1]
 y_pose = data_pose[:, 2]
 yaw_pose = data_lidar_odom[:, 1]
+
+
+t = t_pose
+x = yaw_pose
+
+dx = np.zeros(x.shape, np.float)
+dx[0:-1] = np.diff(x) / np.diff(t)
+dx[-1] = (x[-1] - x[-2]) / (t[-1] - t[-2])
+
+wz = dx
 
 t = t_pose
 x = x_pose
@@ -76,8 +86,8 @@ ddy = np.zeros(dy.shape, np.float)
 ddy[0:-1] = np.diff(dy) / np.diff(t)
 ddy[-1] = (dy[-1] - dy[-2]) / (t[-1] - t[-2])
 
-vx_new = np.zeros((len(vx), 1))
-vy_new = np.zeros((len(vy), 1))
+vx_new = np.zeros(vx.shape, np.float)
+vy_new = np.zeros(vy.shape, np.float)
 
 for i in range(len(vx)-1):
     vx_new[i+1] = cos(yaw_pose[i]) * vx[i+1] + sin(yaw_pose[i]) * vy[i+1]
@@ -85,12 +95,16 @@ for i in range(len(vx)-1):
 
 f_vx = open(path+'vx_robot_frame_lidar.txt', 'w')
 f_vy = open(path+'vy_robot_frame_lidar.txt', 'w')
+f_wz = open(path+'wz_robot_frame_lidar.txt', 'w')
+
 
 printToFile(f_vx,t_pose,vx_new)
 printToFile(f_vy,t_pose,vy_new)
+printToFile(f_wz,t_pose,wz)
 
 f_plot(t_pose, vx_new, colors=colors, linewidth=2.)
 f_plot(t_pose, vy_new, colors=colors, linewidth=2.)
+f_plot(t_pose, wz, colors=colors, linewidth=2.)
 f_plot(t_pose, dx, colors=colors, linewidth=2.)
 f_plot(t_pose, dy, colors=colors, linewidth=2.)
 

@@ -138,6 +138,8 @@ printToFile(f_yaw_magnetometer,t_magnetometer,yaw_magnetometer)
 printToFile(f_yaw_pose_orientation,t_pose_orientation,yaw_pose_orientation)
 printToFile(f_yaw_ZED_orientation,t_ZED_orientation, yaw_ZED_orientation)
 
+
+
 f_plot(t_magnetometer, yaw_magnetometer,
        t_pose_orientation,yaw_pose_orientation,
        t_ZED_orientation, yaw_ZED_orientation,
