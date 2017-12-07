@@ -125,6 +125,9 @@ yaw_pose_orientation = data_lidar_odom[:,1]
 t_ZED_orientation = data_ZED_odom[:,0]
 yaw_ZED_orientation = data_ZED_odom[:,1]
 
+f_plot(t_magnetometer,yaw_magnetometer,
+       colors=colors, linewidth=2.)
+
 
 denormalize(yaw_magnetometer)
 denormalize(yaw_pose_orientation)
@@ -138,9 +141,15 @@ printToFile(f_yaw_magnetometer,t_magnetometer,yaw_magnetometer)
 printToFile(f_yaw_pose_orientation,t_pose_orientation,yaw_pose_orientation)
 printToFile(f_yaw_ZED_orientation,t_ZED_orientation, yaw_ZED_orientation)
 
+path+="prepared/"
+f = open(path+'mag_yaw.txt', 'w')
+printToFile(f,t_magnetometer,yaw_magnetometer)
 
+'''
+f_plot(t_pose_orientation,yaw_pose_orientation,
+       colors=colors, linewidth=2.)
 
-f_plot(t_magnetometer, yaw_magnetometer,
+f_plot(t_magnetometer, t_magnetometer,
        t_pose_orientation,yaw_pose_orientation,
        t_ZED_orientation, yaw_ZED_orientation,
        t_acc, z,
@@ -148,7 +157,9 @@ f_plot(t_magnetometer, yaw_magnetometer,
        colors=colors, linewidth=2.)
 
 
-f_plot(t_pose_orientation,yaw_pose_orientation,
-       colors=colors, linewidth=2.)
 
+
+'''
+f_plot(t_magnetometer,yaw_magnetometer,
+       colors=colors, linewidth=2.)
 plt.show()

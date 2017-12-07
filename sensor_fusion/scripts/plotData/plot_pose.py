@@ -33,6 +33,32 @@ def printToFile(f,t,data):
     for i in range(len(data)):
         f.write("{:.9f} {:.9f}\n".format(t[i],data[i]))
 
+def printToFile2(f, t, x, y, yaw):
+    for i in range(len(t)):
+        f.write("{:.9f} {:.9f} {:.9f} {:.9f}\n".format(t[i], x[i], y[i], yaw[i]))
+
+def denormalize(data):
+    repeat = True
+
+    while (repeat):
+        repeat = False
+        for i in range(len(data) - 1):
+            if (data[i + 1] - data[i] > 2):
+                repeat = True
+                for j in range(len(data)):
+                    if j > i:
+                        data[j] -= 2 * 3.14159265
+
+    repeat = True
+    while (repeat):
+        repeat = False
+        for i in range(len(data) - 1):
+            if (data[i + 1] - data[i] < -2):
+                repeat = True
+                for j in range(len(data)):
+                    if j > i:
+                        data[j] += 2 * 3.14159265
+
 # get an instance of RosPack with the default search paths
 rospack = rospkg.RosPack()
 
@@ -115,4 +141,11 @@ f_plot(t_pose, ddx, colors=colors, linewidth=2.)
 f_plot(t_pose, ddy, colors=colors, linewidth=2.)
 f_plot(x_pose, y_pose, colors=colors, linewidth=2.)
 '''
+
+path+="prepared/"
+f = open(path+'lidar_pose.txt', 'w')
+
+denormalize(yaw_pose)
+printToFile2(f,t_pose,x_pose, y_pose, yaw_pose)
+
 plt.show()

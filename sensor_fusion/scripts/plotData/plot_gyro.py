@@ -28,6 +28,33 @@ def f_plot(*args, **kwargs):
     ax.grid(True)
     ax.legend()
 
+def printToFile2(f,t,x):
+    for i in range(len(t)):
+        f.write("{:.9f} {:.9f}\n".format(t[i],x[i]))
+
+
+def denormalize(data):
+    repeat = True
+
+    while (repeat):
+        repeat = False
+        for i in range(len(data) - 1):
+            if (data[i + 1] - data[i] > 2):
+                repeat = True
+                for j in range(len(data)):
+                    if j > i:
+                        data[j] -= 2 * 3.14159265
+
+    repeat = True
+    while (repeat):
+        repeat = False
+        for i in range(len(data) - 1):
+            if (data[i + 1] - data[i] < -2):
+                repeat = True
+                for j in range(len(data)):
+                    if j > i:
+                        data[j] += 2 * 3.14159265
+
 # get an instance of RosPack with the default search paths
 rospack = rospkg.RosPack()
 
@@ -58,6 +85,17 @@ for i in range(len(iz)):
 
 f_plot(t_acc, z_acc , colors=colors, linewidth=2.)
 f_plot(t_acc, z , colors=colors, linewidth=2.)
+
+path+="prepared/"
+f = open(path+'gyro_yaw.txt', 'w')
+denormalize(z)
+printToFile2(f,t_acc,z)
+
+for j in range(3):
+    for i in range(len(z)):
+        if (z[i]>3.14159265):
+            z[i]-=2*3.14159265
+
 f_plot(t_acc, z , colors=colors, linewidth=2.)
 
 plt.show()
